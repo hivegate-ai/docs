@@ -96,9 +96,9 @@ The apply operation:
 2. Creates agent records with worker configurations
 3. Creates the team with agent assignments
 
-### Default Supervisor Pack
+### Example: Default Supervisor Pack
 
-The built-in `packs/default_supervisor/` pack includes:
+The `agents-gateway-tests` repository ships an example `packs/default_supervisor/` pack that can be loaded via the CLI. It includes:
 
 | Agent | Role | Engine | Description |
 |-------|------|--------|-------------|

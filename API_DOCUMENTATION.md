@@ -2368,9 +2368,9 @@ The apply operation:
 2. Creates agent records with worker configurations
 3. Creates the team with agent assignments
 
-### Default Supervisor Pack
+### Example: Default Supervisor Pack
 
-The built-in `packs/default_supervisor/` pack includes:
+The `agents-gateway-tests` repository ships an example `packs/default_supervisor/` pack that can be loaded via the CLI. It includes:
 
 | Agent | Role | Engine | Description |
 |-------|------|--------|-------------|
@@ -2932,15 +2932,19 @@ The provider is determined automatically from the model ID prefix:
 
 ### Development (Docker Compose)
 
-The project uses Docker Compose for local development infrastructure:
+The project uses `compose.yaml` at the repo root for local development infrastructure. It spins up PostgreSQL (pgvector) and Qdrant:
 
 ```yaml
-# docker-compose.test.yml - Qdrant for vector search
+# compose.yaml (excerpt)
 services:
+  pgvector:
+    image: agnohq/pgvector:16
+    ports:
+      - "5432:5432"
   qdrant:
     image: qdrant/qdrant:latest
     ports:
-      - "6333:6333"  # REST API
+      - "6333:6333"  # REST
       - "6334:6334"  # gRPC
 ```
 
