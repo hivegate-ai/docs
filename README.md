@@ -1,6 +1,6 @@
 # Agents Gateway Documentation
 
-Comprehensive documentation for the [Agents Gateway API](https://github.com/liberzon/agno-agent-api).
+Comprehensive documentation for the [Agents Gateway API](https://github.com/liberzon/agents-gateway).
 
 ## View Online
 
