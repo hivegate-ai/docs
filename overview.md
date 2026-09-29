@@ -1,7 +1,7 @@
 # Overview
 
 
-Agents Gateway is a FastAPI-based platform for managing, orchestrating, and executing LLM-powered agents. It provides a unified REST API for agent CRUD, multi-agent teams, knowledge management, token storage, prompt templates, skills, and a supervisor/worker execution platform.
+HiveGate is a FastAPI-based platform for managing, orchestrating, and executing LLM-powered agents. It provides a unified REST API for agent CRUD, multi-agent teams, knowledge management, token storage, prompt templates, skills, and a supervisor/worker execution platform.
 
 ### Architecture
 
@@ -13,7 +13,7 @@ Agents Gateway is a FastAPI-based platform for managing, orchestrating, and exec
                                    X-API-Key | (V2 routes)
                                              |
                               +--------------v--------------+
-                              |      agents-gateway         |
+                              |      hivegate         |
                               |    FastAPI  (port 8000)     |
                               |                             |
                               |  /v2/agents   /v2/teams     |

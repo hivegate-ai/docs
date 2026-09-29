@@ -1,6 +1,6 @@
-# Agents Gateway Documentation
+# HiveGate Documentation
 
-Comprehensive documentation for the [Agents Gateway API](https://github.com/liberzon/agents-gateway).
+Comprehensive documentation for the [HiveGate API](https://github.com/hivegate-ai/hivegate).
 
 ## View Online
 

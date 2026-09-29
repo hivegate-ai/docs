@@ -1,6 +1,6 @@
-"""Sphinx configuration for Agents Gateway documentation."""
+"""Sphinx configuration for HiveGate documentation."""
 
-project = "Agents Gateway"
+project = "HiveGate"
 copyright = "2025, Agno"
 author = "Agno"
 release = "2.0"
