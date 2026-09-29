@@ -5,19 +5,29 @@
 
 - Python 3.11+
 - Docker (for PostgreSQL and Qdrant)
-- `uv` package manager
+- An API key for a model provider (the examples use Gemini)
 
 ### Setup
 
 ```bash
-# Clone and setup
-cd agent-api
-./scripts/dev_setup.sh && source .venv/bin/activate
+git clone https://github.com/hivegate-ai/hivegate
+cd hivegate
+cp .env.example .env
+```
 
-# Start infrastructure
+Edit `.env` **before starting the server**. The server reads it once at startup, so variables exported in another terminal won't reach it.
+
+- Set `GOOGLE_API_KEY`, or another provider's key.
+- For local development, uncomment `AUTH_DISABLED=true` so you can call `/v2` without an API key. Never enable it on a deployment other people can reach.
+
+The database settings in `.env.example` already match the Postgres that Docker Compose starts.
+
+```bash
+# Start infrastructure (Postgres + Qdrant, seeds demo agents)
 docker compose up -d
 
-# Start API server (port 8000)
+# Set up the Python environment and start the API server (port 8000)
+./scripts/dev_setup.sh && source .venv/bin/activate
 ./scripts/start_server.sh
 ```
 
@@ -26,9 +36,6 @@ docker compose up -d
 ```bash
 # Check health (no auth required)
 curl http://localhost:8000/health
-
-# With auth disabled (development mode)
-export AUTH_DISABLED=true
 
 # List agents
 curl http://localhost:8000/v2/agents
@@ -50,7 +57,6 @@ curl -X POST http://localhost:8000/v2/agents/my-first-agent/chat \
   -d '{
     "message": "What is the capital of France?",
     "stream": false,
-    "model": "gemini-2.5-pro",
     "user_id": "user-1",
     "session_id": "session-1",
     "timezone": "UTC",
