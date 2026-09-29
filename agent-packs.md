@@ -98,7 +98,7 @@ The apply operation:
 
 ### Example: Default Supervisor Pack
 
-The `agents-gateway-tests` repository ships an example `packs/default_supervisor/` pack that can be loaded via the CLI. It includes:
+The `hivegate-ai/tests` repository ships an example `packs/default_supervisor/` pack that can be loaded via the CLI. It includes:
 
 | Agent | Role | Engine | Description |
 |-------|------|--------|-------------|
