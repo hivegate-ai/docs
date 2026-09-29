@@ -130,7 +130,6 @@ curl -X POST http://localhost:8000/v2/teams/support-team/runs \
   -d '{
     "message": "A customer reports they cannot log in after changing their email address",
     "stream": false,
-    "model": "gemini-2.5-pro",
     "user_id": "user-42",
     "session_id": "team-sess-001",
     "stream_verbosity": "events",
@@ -158,7 +157,7 @@ curl -X POST http://localhost:8000/v2/teams/support-team/runs \
 | `message` | string | Yes | User message |
 | `stream` | boolean | No (default: true) | Enable SSE streaming |
 | `stream_verbosity` | string | No (default: "events") | Verbosity: `full`, `events`, `result` |
-| `model` | Model enum | No (default: gemini-2.5-pro) | LLM model |
+| `model` | Model enum | No (default: `DEFAULT_CHAT_MODEL`, else `gemini-3-flash-preview`) | LLM model |
 | `user_id` | string | No | User identifier |
 | `session_id` | string | No | Session identifier |
 | `user_profile` | UserProfile | No | User profile |
@@ -176,7 +175,7 @@ curl -X POST http://localhost:8000/v2/teams/support-team/runs \
   "content": "Based on our investigation, the customer needs to verify their new email...",
   "team_id": "support-team",
   "session_id": "team-sess-001",
-  "model": "gemini-2.5-pro",
+  "model": "gemini-3-flash-preview",
   "token_usage": {
     "input_tokens": 1250,
     "output_tokens": 340,
@@ -199,7 +198,6 @@ curl -X POST http://localhost:8000/v2/teams/support-team/runs/commit \
   -d '{
     "run_id": "run-team-abc",
     "stream": false,
-    "model": "gemini-2.5-pro",
     "user_id": "user-42",
     "session_id": "team-sess-001",
     "updated_tools": [
@@ -218,7 +216,7 @@ curl -X POST http://localhost:8000/v2/teams/support-team/runs/commit \
   "content": "The email update has been confirmed and the customer's account is now accessible.",
   "team_id": "support-team",
   "session_id": "team-sess-001",
-  "model": "gemini-2.5-pro",
+  "model": "gemini-3-flash-preview",
   "status": "completed"
 }
 ```

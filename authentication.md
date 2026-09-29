@@ -19,7 +19,7 @@ curl http://localhost:8000/admin/cache/stats \
   -H "X-Admin-Secret: my-secret-value"
 ```
 
-### Health Routes (`/health`, `/status`, `/version`, `/`)
+### Health Routes (`/health`, `/status`, `/version`, `/_/version`, `/`)
 
 No authentication required.
 
