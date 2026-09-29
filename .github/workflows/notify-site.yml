@@ -1,0 +1,32 @@
+name: Notify site
+
+# Rebuilds hivegate.dev (hivegate-ai/site) whenever these docs change, so the
+# synced /docs/* reference pages stay current. The site also rebuilds daily as
+# a fallback, so a missing token only delays updates by up to a day.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  notify:
+    name: Dispatch docs-updated to hivegate-ai/site
+    if: github.repository == 'hivegate-ai/docs'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for token
+        id: token
+        env:
+          SITE_DISPATCH_TOKEN: ${{ secrets.SITE_DISPATCH_TOKEN }}
+        run: |
+          if [ -n "$SITE_DISPATCH_TOKEN" ]; then echo "present=true" >> "$GITHUB_OUTPUT"
+          else echo "::warning::SITE_DISPATCH_TOKEN is not set; the site will pick up these docs on its daily rebuild."; fi
+      - name: Send repository_dispatch
+        if: steps.token.outputs.present == 'true'
+        uses: peter-evans/repository-dispatch@v4
+        with:
+          token: ${{ secrets.SITE_DISPATCH_TOKEN }}
+          repository: hivegate-ai/site
+          event-type: docs-updated
+          client-payload: '{"sha": "${{ github.sha }}"}'
