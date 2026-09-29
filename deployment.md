@@ -46,6 +46,7 @@ print(Fernet.generate_key().decode())
 | `/health` | GET | None | Database connectivity check |
 | `/status` | GET | None | Service status |
 | `/version` | GET | None | API version |
+| `/_/version` | GET | None | Commit the running process was built from (`{"commit": "<sha>"}`, or `"unknown"` without `GIT_SHA`). Use it after a deploy to confirm which code is actually answering |
 | `/` | GET | None | Root with docs link |
 
 ```bash

@@ -139,7 +139,7 @@ curl -X POST http://localhost:8000/v2/agents \
 | `enable_reasoning` | boolean | false | Enable step-by-step reasoning |
 | `reasoning_min_steps` | integer | 1 | Minimum reasoning steps |
 | `reasoning_max_steps` | integer | 10 | Maximum reasoning steps |
-| `worker_config` | object | null | Supervisor worker configuration (MCP servers, hooks, permissions) |
+| `worker_config` | object | null | Supervisor worker configuration (MCP servers, hooks, permissions). HTTP MCP servers here are also used on the chat path; see [MCP tools in chat](#mcp-tools-in-chat) |
 
 **Response** `201 Created`:
 
@@ -181,7 +181,6 @@ curl -X POST http://localhost:8000/v2/agents/customer-support/chat \
   -d '{
     "message": "I need help resetting my password",
     "stream": false,
-    "model": "gemini-2.5-pro",
     "user_id": "user-42",
     "session_id": "sess-abc123",
     "timezone": "America/New_York",
@@ -207,7 +206,7 @@ curl -X POST http://localhost:8000/v2/agents/customer-support/chat \
 |-------|------|----------|-------------|
 | `message` | string | Yes | User message |
 | `stream` | boolean | No (default: true) | Enable SSE streaming |
-| `model` | Model enum | No (default: gemini-2.5-pro) | LLM model to use |
+| `model` | Model enum | No (default: `DEFAULT_CHAT_MODEL`, else `gemini-3-flash-preview`) | LLM model to use |
 | `user_id` | string | Yes | User identifier |
 | `session_id` | string | Yes | Session identifier for conversation continuity |
 | `timezone` | string | Yes | User timezone (e.g., "America/New_York") |
@@ -227,7 +226,7 @@ curl -X POST http://localhost:8000/v2/agents/customer-support/chat \
   "content": "I can help you reset your password. Please go to Settings > Security > Reset Password...",
   "agent_id": "customer-support",
   "session_id": "sess-abc123",
-  "model": "gemini-2.5-pro",
+  "model": "gemini-3-flash-preview",
   "token_usage": null,
   "status": "completed",
   "run_id": "run-f47ac10b",
@@ -252,7 +251,7 @@ data: {"content": "you reset your password.", "status": "completed", "run_id": "
   "content": null,
   "agent_id": "customer-support",
   "session_id": "sess-abc123",
-  "model": "gemini-2.5-pro",
+  "model": "gemini-3-flash-preview",
   "status": "paused",
   "run_id": "run-f47ac10b",
   "tools": [
@@ -270,6 +269,23 @@ data: {"content": "you reset your password.", "status": "completed", "run_id": "
 }
 ```
 
+### MCP tools in chat
+
+If an agent's `worker_config.mcp_servers` lists an HTTP MCP server (`type: "http"` or `"streamable-http"` with a `url`), chat requests connect to it and give the agent that server's tools, alongside its regular toolkits. `headers` are sent with each connection, for example a bearer token. Agents with MCP servers get a fresh agent per request instead of the cached one. If a streamed chat can't connect to an MCP server, the stream ends with an `error` event. `stdio` servers are only used by supervisor workers.
+
+```json
+"worker_config": {
+  "mcp_servers": [
+    {
+      "name": "budget",
+      "type": "http",
+      "url": "https://mcp.example.com/mcp",
+      "headers": {"Authorization": "Bearer <token>"}
+    }
+  ]
+}
+```
+
 ### Commit (Resume Paused Run)
 
 After inspecting/editing tool args from a paused run, send confirmed tools to resume execution.
@@ -281,7 +297,6 @@ curl -X POST http://localhost:8000/v2/agents/customer-support/chat/commit \
   -d '{
     "run_id": "run-f47ac10b",
     "stream": false,
-    "model": "gemini-2.5-pro",
     "user_id": "user-42",
     "session_id": "sess-abc123",
     "updated_tools": [
@@ -328,7 +343,7 @@ Set `confirmed: false` on all tools to cancel execution:
   "content": "Tool execution cancelled by user.",
   "agent_id": "customer-support",
   "session_id": "sess-abc123",
-  "model": "gemini-2.5-pro",
+  "model": "gemini-3-flash-preview",
   "status": "cancelled"
 }
 ```
